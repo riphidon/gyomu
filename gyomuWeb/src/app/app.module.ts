@@ -13,6 +13,10 @@ import { GyomuShellComponent } from './shells/gyomu-shell/gyomu-shell.component'
 import { HomeShellComponent } from './shells/home-shell/home-shell.component';
 import { UiContainersModule } from './ui-containers/ui-containers.module';
 import { SharingModule } from './sharing/sharing.module';
+import { GyomuReducer } from './state/reducers/gyomu-shell.reducer';
+import { HomeReducer } from './state/reducers/home.reducer';
+import { GyomuShellEffects } from './state/effects/gyomu-shell.effects';
+import { HomeEffects } from './state/effects/home.effects';
 
 @NgModule({
     declarations: [AppComponent, GyomuShellComponent, HomeShellComponent],
@@ -20,12 +24,18 @@ import { SharingModule } from './sharing/sharing.module';
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
-        StoreModule.forRoot({}, {}),
+        StoreModule.forRoot(
+            {
+                shell: GyomuReducer,
+                home: HomeReducer,
+            },
+            {}
+        ),
         StoreDevtoolsModule.instrument({
             maxAge: 25,
             logOnly: environment.production,
         }),
-        EffectsModule.forRoot([]),
+        EffectsModule.forRoot([GyomuShellEffects, HomeEffects]),
         StoreRouterConnectingModule.forRoot(),
         SharingModule,
         UiContainersModule,
