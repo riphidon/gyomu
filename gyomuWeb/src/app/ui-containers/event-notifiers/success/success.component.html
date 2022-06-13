@@ -1,0 +1,6 @@
+<div class="success-notifier snack-notifier">
+    <div class="success-message" [innerHtml]="successMsg | safeHtml"></div>
+    <button mat-icon-button (click)="successNotifier.dismiss()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>

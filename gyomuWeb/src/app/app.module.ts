@@ -9,11 +9,16 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GyomuShellComponent } from './shells/gyomu-shell/gyomu-shell.component';
+import { HomeShellComponent } from './shells/home-shell/home-shell.component';
+import { UiContainersModule } from './ui-containers/ui-containers.module';
+import { SharingModule } from './sharing/sharing.module';
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, GyomuShellComponent, HomeShellComponent],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         AppRoutingModule,
         StoreModule.forRoot({}, {}),
         StoreDevtoolsModule.instrument({
@@ -22,7 +27,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         }),
         EffectsModule.forRoot([]),
         StoreRouterConnectingModule.forRoot(),
-        BrowserAnimationsModule,
+        SharingModule,
+        UiContainersModule,
     ],
     providers: [],
     bootstrap: [AppComponent],
