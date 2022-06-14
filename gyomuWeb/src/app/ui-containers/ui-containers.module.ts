@@ -5,6 +5,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ErrorComponent } from './event-notifiers/error/error.component';
 import { SuccessComponent } from './event-notifiers/success/success.component';
 import { SharingModule } from '../sharing/sharing.module';
+import { TagsBoxComponent } from './tags-box/tags-box.component';
 
 @NgModule({
     declarations: [
@@ -12,6 +13,7 @@ import { SharingModule } from '../sharing/sharing.module';
         NavBarComponent,
         ErrorComponent,
         SuccessComponent,
+        TagsBoxComponent,
     ],
     imports: [CommonModule, SharingModule],
     exports: [MenuComponent, NavBarComponent],

@@ -1,0 +1,27 @@
+<mat-card>
+    <mat-chip-list #chipList aria-label="tag selection">
+        <mat-chip *ngFor="let tag of editableTags" (removed)="remove(tag)">
+            {{ tag }}
+            <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+            </button>
+        </mat-chip>
+    </mat-chip-list>
+    <form [formGroup]="tagForm">
+        <mat-form-field appearance="legacy">
+            <input
+                matInput
+                placeholder="New tag..."
+                #tagInput
+                formControlName="newTag"
+                [matChipInputFor]="chipList"
+                (matChipInputTokenEnd)="add($event)"
+            />
+        </mat-form-field>
+        <div *ngIf="tagForm.controls['newTag'].invalid">
+            <mat-error *ngIf="tagForm.controls['newTag'].errors?.['tagExists']">
+                This tag already exists.
+            </mat-error>
+        </div>
+    </form>
+</mat-card>

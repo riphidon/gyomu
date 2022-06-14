@@ -1,0 +1,14 @@
+mat-card {
+    mat-label {
+        text-align: center;
+    }
+    min-height: 250px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    input.mat-chip-input {
+        flex: 0;
+    }
+}

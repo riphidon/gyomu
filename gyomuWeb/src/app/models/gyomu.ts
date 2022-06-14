@@ -3,4 +3,5 @@ export interface IGyomuUser {
     name: string;
     nick: string;
     permissions: string[];
+    isSuperUser: boolean;
 }
