@@ -1,0 +1,38 @@
+<mat-stepper labelPosition="bottom" #baseRegister>
+    <mat-step [stepControl]="baseRegisterForm">
+        <form [formGroup]="baseRegisterForm">
+            <ng-template matStepLabel
+                >Fill out information about your organization</ng-template
+            >
+            <mat-form-field appearance="fill">
+                <mat-label>Name</mat-label>
+                <input
+                    matInput
+                    placeholder=""
+                    formControlName="name"
+                    required
+                />
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step>
+        <div>
+            <app-register></app-register>
+            <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </div>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>You are now done.</p>
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="baseRegister.reset()">Reset</button>
+        </div>
+    </mat-step>
+</mat-stepper>

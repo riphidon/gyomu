@@ -1,0 +1,121 @@
+<form [formGroup]="registerForm">
+    <!-- Name Input-->
+    <mat-form-field class="name" appearance="legacy">
+        <mat-label>Name</mat-label>
+        <input matInput id="name" formControlName="name" type="text" />
+    </mat-form-field>
+    <div
+        *ngIf="
+            registerForm.controls['name'].invalid &&
+            (registerForm.controls['name'].dirty ||
+                registerForm.controls['name'].touched)
+        "
+    >
+        <mat-error *ngIf="registerForm.controls['email'].errors?.['required']">
+            Name is required.
+        </mat-error>
+        <mat-error *ngIf="registerForm.controls['email'].errors?.['pattern']">
+            Name can not be empty.
+        </mat-error>
+    </div>
+    <!-- Last Name Input-->
+    <mat-form-field class="lastName" appearance="legacy">
+        <mat-label>Last Name</mat-label>
+        <input matInput id="lastName" formControlName="lastName" type="text" />
+    </mat-form-field>
+    <div
+        *ngIf="
+            registerForm.controls['lastName'].invalid &&
+            (registerForm.controls['lastName'].dirty ||
+                registerForm.controls['lastName'].touched)
+        "
+    >
+        <mat-error
+            *ngIf="registerForm.controls['lastName'].errors?.['required']"
+        >
+            Last Name is required.
+        </mat-error>
+        <mat-error
+            *ngIf="registerForm.controls['lastName'].errors?.['pattern']"
+        >
+            Last Name can not be empty.
+        </mat-error>
+    </div>
+    <!-- Nickname Input-->
+    <mat-form-field class="nickName" appearance="legacy">
+        <mat-label>Nickname</mat-label>
+        <input matInput id="nickName" formControlName="nickName" type="text" />
+    </mat-form-field>
+    <div
+        *ngIf="
+            registerForm.controls['nickName'].invalid &&
+            (registerForm.controls['nickName'].dirty ||
+                registerForm.controls['nickName'].touched)
+        "
+    >
+        <mat-error
+            *ngIf="registerForm.controls['nickName'].errors?.['required']"
+        >
+            Nickname is required.
+        </mat-error>
+        <mat-error
+            *ngIf="registerForm.controls['nickName'].errors?.['pattern']"
+        >
+            Nickname can not be empty.
+        </mat-error>
+    </div>
+    <!-- Email Input-->
+    <mat-form-field class="email" appearance="legacy">
+        <mat-label>Email</mat-label>
+        <input matInput id="email" formControlName="email" type="email" />
+    </mat-form-field>
+    <div
+        *ngIf="
+            registerForm.controls['email'].invalid &&
+            (registerForm.controls['email'].dirty ||
+                registerForm.controls['email'].touched)
+        "
+    >
+        <mat-error *ngIf="registerForm.controls['email'].errors?.['required']">
+            Email is required.
+        </mat-error>
+        <mat-error *ngIf="registerForm.controls['email'].errors?.['pattern']">
+            Name can not be empty.
+        </mat-error>
+    </div>
+
+    <!-- Password Input-->
+    <mat-form-field class="password" appearance="legacy">
+        <mat-label>Password</mat-label>
+        <input
+            matInput
+            id="password"
+            formControlName="password"
+            type="password"
+        />
+    </mat-form-field>
+    <div
+        *ngIf="
+            registerForm.controls['password'].invalid &&
+            (registerForm.controls['password'].dirty ||
+                registerForm.controls['password'].touched)
+        "
+    >
+        <mat-error
+            *ngIf="registerForm.controls['password'].errors?.['required']"
+        >
+            Password is required.
+        </mat-error>
+    </div>
+
+    <!-- Password Verify Input-->
+    <mat-form-field class="verify" appearance="legacy">
+        <mat-label>Verify Password</mat-label>
+        <input
+            matInput
+            id="verify"
+            formControlName="password"
+            type="password"
+        />
+    </mat-form-field>
+</form>

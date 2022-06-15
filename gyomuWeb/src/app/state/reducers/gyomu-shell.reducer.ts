@@ -1,11 +1,11 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { IGyomuUser } from 'src/app/models/gyomu';
+import { IGyomuMember } from 'src/app/models/user';
 import { GyomuShellActions } from '..';
 
 export const gyomuShellFeatureKey = 'gyomuShell';
 
 export interface IGyomuShellState {
-    user: IGyomuUser | null;
+    user: IGyomuMember | null;
 }
 
 export const initialState: IGyomuShellState = {

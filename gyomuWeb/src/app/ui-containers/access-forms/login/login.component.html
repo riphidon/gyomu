@@ -1,0 +1,45 @@
+<form [formGroup]="loginForm">
+    <!-- Email Input-->
+    <mat-form-field class="email" appearance="legacy">
+        <mat-label>Email</mat-label>
+        <input matInput id="email" formControlName="email" type="email" />
+    </mat-form-field>
+    <div
+        *ngIf="
+            loginForm.controls['email'].invalid &&
+            (loginForm.controls['email'].dirty ||
+                loginForm.controls['email'].touched)
+        "
+    >
+        <mat-error *ngIf="loginForm.controls['email'].errors?.['required']">
+            Email is required.
+        </mat-error>
+        <mat-error *ngIf="loginForm.controls['email'].errors?.['pattern']">
+            Email can not be empty.
+        </mat-error>
+    </div>
+
+    <!-- Password Input-->
+    <mat-form-field class="password" appearance="legacy">
+        <mat-label>Password</mat-label>
+        <input
+            matInput
+            id="password"
+            formControlName="password"
+            type="password"
+        />
+        <div
+            *ngIf="
+                loginForm.controls['password'].invalid &&
+                (loginForm.controls['password'].dirty ||
+                    loginForm.controls['password'].touched)
+            "
+        >
+            <mat-error
+                *ngIf="loginForm.controls['password'].errors?.['required']"
+            >
+                Password is required.
+            </mat-error>
+        </div>
+    </mat-form-field>
+</form>
