@@ -4,12 +4,12 @@ export interface ILoadItem<T> {
     value: T | null;
     isLoading: boolean;
     hasError: boolean;
-    error: IError;
+    error: IError | null;
 }
 
 export interface IProcessItem {
     isOngoing: boolean;
     isSuccess: boolean;
     hasError: boolean;
-    error: IError;
+    error: IError | null;
 }

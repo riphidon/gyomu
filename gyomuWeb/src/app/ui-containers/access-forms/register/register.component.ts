@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 export interface IUserRegister {
@@ -15,6 +15,8 @@ export interface IUserRegister {
     styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
+    @Output() userRegister = new EventEmitter<IUserRegister>();
+
     registerForm = new FormGroup({
         name: new FormControl('', Validators.required),
         lastName: new FormControl('', Validators.required),

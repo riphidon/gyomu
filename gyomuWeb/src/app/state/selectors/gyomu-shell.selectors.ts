@@ -1,9 +1,16 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import * as GyomuState from '../reducers/gyomu-shell.reducer';
+import { IGyomuShellState } from '../reducers/gyomu-shell.reducer';
 
-export interface State {
-    gyomu: GyomuState.IGyomuShellState;
-}
+const gyomuState = 'gyomuState';
 
-const getGyomuState = (state: State) => state.gyomu;
+const selectGyomuState = createFeatureSelector<IGyomuShellState>(gyomuState);
+
+export const selectUser = createSelector(
+    selectGyomuState,
+    (state) => state.user
+);
+export const selectConfiguration = createSelector(
+    selectGyomuState,
+    (state) => state.configuration
+);

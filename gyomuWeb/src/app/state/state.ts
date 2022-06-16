@@ -1,5 +1,8 @@
+import { IGyomuShellState } from './reducers/gyomu-shell.reducer';
+
 export enum ACTION_KEYS {
     accept = 'accept',
+    cancel = 'cancel',
     create = 'create',
     delete = 'delete',
     duplicate = 'duplicate',
@@ -10,4 +13,8 @@ export enum ACTION_KEYS {
     send = 'send',
     set = 'set',
     update = 'update',
+}
+
+export interface IState {
+    gyomu: IGyomuShellState;
 }
