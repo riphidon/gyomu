@@ -1,1 +1,13 @@
-<p>home-log-screen works!</p>
+<mat-card>
+    <mat-card-content class="login-panel">
+        <h2>Already have an account ? Log in !</h2>
+        <app-login></app-login>
+    </mat-card-content>
+    <mat-divider [vertical]="true"></mat-divider>
+    <mat-card-content class="register-panel">
+        <h2>Or register</h2>
+        <app-base-registration-btn
+            (baseRegister)="register($event)"
+        ></app-base-registration-btn>
+    </mat-card-content>
+</mat-card>

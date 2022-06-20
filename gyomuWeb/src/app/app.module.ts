@@ -26,8 +26,8 @@ import { HomeEffects } from './state/effects/home.effects';
         AppRoutingModule,
         StoreModule.forRoot(
             {
-                shell: GyomuReducer,
-                home: HomeReducer,
+                gyomuState: GyomuReducer,
+                homeState: HomeReducer,
             },
             {}
         ),

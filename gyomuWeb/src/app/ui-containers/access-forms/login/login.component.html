@@ -42,4 +42,8 @@
             </mat-error>
         </div>
     </mat-form-field>
+
+    <button mat-button [disabled]="!loginForm.valid" (click)="login()">
+        Login
+    </button>
 </form>

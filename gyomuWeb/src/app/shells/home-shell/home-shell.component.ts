@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { IGyomuConfig } from 'src/app/models/gyomu';
@@ -6,7 +6,11 @@ import { IGyomuMember } from 'src/app/models/user';
 import { ILoadItem } from 'src/app/state/state.models';
 
 /** Selectors */
-import { shellSelectors } from 'src/app/state/selectors';
+import { homeItems, shellItems } from 'src/app/state/selectors';
+
+/** */
+import { ILoginCredentials } from 'src/app/ui-containers/access-forms/login/login.component';
+import { IGroupRegisterRequest } from 'src/app/ui-containers/access-forms/base-registration/base-registration-btn/base-registration-btn.component';
 
 @Component({
     selector: 'app-home-shell',
@@ -14,14 +18,21 @@ import { shellSelectors } from 'src/app/state/selectors';
     styleUrls: ['./home-shell.component.scss'],
 })
 export class HomeShellComponent {
+    // To handle unsubscription from observable.
     ngDestroyed$ = new Subject();
 
     user$: Observable<ILoadItem<IGyomuMember>>;
     configuration$: Observable<ILoadItem<IGyomuConfig>>;
+    isUserLoggedIn$: Observable<boolean>;
 
     constructor(private store: Store) {
         // Get subscriptions from the store.
-        this.user$ = this.store.select(shellSelectors.selectUser);
-        this.configuration$ = store.select(shellSelectors.selectConfiguration);
+        this.user$ = this.store.select(shellItems.selectUser);
+        this.configuration$ = this.store.select(shellItems.selectConfiguration);
+        this.isUserLoggedIn$ = this.store.select(homeItems.selectUserStatus);
     }
+
+    login(creds: ILoginCredentials): void {}
+
+    register(registerForm: IGroupRegisterRequest): void {}
 }

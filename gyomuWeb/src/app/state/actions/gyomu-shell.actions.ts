@@ -17,14 +17,27 @@ export const LoadConfigurationFailure = createAction(
 );
 
 /************************************
- *                User              *
+ *              Access              *
  ************************************/
-export const LoadUser = createAction('[GYOMU SHELL Page] Load User');
-export const LoadUserSuccess = createAction(
-    '[GYOMU SHELL API] Load User Success',
+/** User log in */
+export const LoginUser = createAction('[GYOMU SHELL Page] Log In User');
+export const LoginUserSuccess = createAction(
+    '[GYOMU SHELL API] Log In User Success',
     props<{ user: IGyomuMember }>()
 );
-export const LoadUserFailure = createAction(
-    '[GYOMU SHELL API] Load User Failure',
+export const LoginUserFailure = createAction(
+    '[GYOMU SHELL API] Log In User Failure',
+    props<{ error: IError }>()
+);
+
+/** Group registration */
+export const RegisterCustomer = createAction(
+    '[GYOMU SHELL Page] Register Customer'
+);
+export const RegisterCustomerSuccess = createAction(
+    '[GYOMU SHELL API] Register Customer Success'
+);
+export const RegisterCustomerFailure = createAction(
+    '[GYOMU SHELL API] Register Customer Failure',
     props<{ error: IError }>()
 );

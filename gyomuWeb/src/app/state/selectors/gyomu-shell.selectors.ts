@@ -2,9 +2,9 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { IGyomuShellState } from '../reducers/gyomu-shell.reducer';
 
-const gyomuState = 'gyomuState';
+const gyomuStateKey = 'gyomuState';
 
-const selectGyomuState = createFeatureSelector<IGyomuShellState>(gyomuState);
+const selectGyomuState = createFeatureSelector<IGyomuShellState>(gyomuStateKey);
 
 export const selectUser = createSelector(
     selectGyomuState,

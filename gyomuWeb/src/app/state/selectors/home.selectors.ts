@@ -1,9 +1,11 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { IHomeState } from '../reducers/home.reducer';
 
-import * as HomeState from '../reducers/home.reducer';
+const homeStateKey = 'homeState';
 
-export interface State {
-    home: HomeState.IHomeState;
-}
+const selectHomeState = createFeatureSelector<IHomeState>(homeStateKey);
 
-const getHomeState = (state: State) => state.home;
+export const selectUserStatus = createSelector(
+    selectHomeState,
+    (state) => state.isUserLoggedIn
+);

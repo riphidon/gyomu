@@ -62,28 +62,34 @@ export const GyomuReducer = createReducer(
     ),
     //#endregion
     //#region USER
-    on(GyomuShellActions.LoadUser, (state, action): IGyomuShellState => {
+    on(GyomuShellActions.LoginUser, (state, action): IGyomuShellState => {
         return {
             ...state,
             user: { ...state.user, isLoading: true },
         };
     }),
-    on(GyomuShellActions.LoadUserSuccess, (state, action): IGyomuShellState => {
-        return {
-            ...state,
-            user: { ...state.user, value: action.user, isLoading: false },
-        };
-    }),
-    on(GyomuShellActions.LoadUserFailure, (state, action): IGyomuShellState => {
-        return {
-            ...state,
-            user: {
-                ...state.user,
-                isLoading: false,
-                hasError: true,
-                error: action.error,
-            },
-        };
-    })
+    on(
+        GyomuShellActions.LoginUserSuccess,
+        (state, action): IGyomuShellState => {
+            return {
+                ...state,
+                user: { ...state.user, value: action.user, isLoading: false },
+            };
+        }
+    ),
+    on(
+        GyomuShellActions.LoadConfigurationFailure,
+        (state, action): IGyomuShellState => {
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    isLoading: false,
+                    hasError: true,
+                    error: action.error,
+                },
+            };
+        }
+    )
     //#endregion
 );

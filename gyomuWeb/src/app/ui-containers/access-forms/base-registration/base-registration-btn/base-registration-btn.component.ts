@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ACTION_KEYS } from 'src/app/state/state';
+import { ACTION_KEYS } from 'src/app/state/state.models';
 import { IUserRegister } from '../../register/register.component';
 import {
     BaseRegistrationComponent,
