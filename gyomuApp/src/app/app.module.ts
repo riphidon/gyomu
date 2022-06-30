@@ -1,0 +1,61 @@
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouteReuseStrategy, RouterModule } from '@angular/router';
+
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { EntityDataModule } from '@ngrx/data';
+import { entityConfig } from './entity-metadata';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { GyomuShellEffects } from './state/effects/gyomu-shell.effects';
+import { HomeEffects } from './state/effects/home.effects';
+import { GyomuReducer } from './state/reducers/gyomu-shell.reducer';
+import { HomeReducer } from './state/reducers/home.reducer';
+import { SharingModule } from './sharing/sharing.module';
+import { UiContainersModule } from './ui-containers/ui-containers.module';
+import { GyomuShellComponent } from './shells/gyomu-shell/gyomu-shell.component';
+import { HomeShellComponent } from './shells/home-shell/home-shell.component';
+import { ProjectsShellComponent } from './shells/projects-shell/projects-shell.component';
+import { rootReducer } from './state/reducers/root.reducer';
+import { HttpClientModule } from '@angular/common/http';
+
+@NgModule({
+    declarations: [
+        AppComponent,
+        GyomuShellComponent,
+        HomeShellComponent,
+        ProjectsShellComponent,
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        SharingModule,
+        UiContainersModule,
+        IonicModule.forRoot(),
+        StoreModule.forRoot(
+            {
+                rootState: rootReducer,
+                gyomuState: GyomuReducer,
+                homeState: HomeReducer,
+            },
+            {}
+        ),
+        EffectsModule.forRoot([GyomuShellEffects, HomeEffects]),
+        EntityDataModule.forRoot(entityConfig),
+        StoreDevtoolsModule.instrument({
+            maxAge: 25,
+            logOnly: environment.production,
+        }),
+    ],
+    providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+    bootstrap: [AppComponent],
+})
+export class AppModule {}
