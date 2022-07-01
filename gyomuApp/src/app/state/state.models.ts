@@ -14,6 +14,12 @@ export interface IProcessItem {
     error: IError | null;
 }
 
+export interface IAuthProcess {
+    isAuthenticated: boolean;
+    isChecking: boolean;
+    error: IError | null;
+}
+
 export enum ACTION_KEYS {
     accept = 'accept',
     cancel = 'cancel',
@@ -22,9 +28,17 @@ export enum ACTION_KEYS {
     duplicate = 'duplicate',
     edit = 'edit',
     load = 'load',
+    login = 'login',
+    logout = 'logout',
     publish = 'publish',
+    register = 'register',
     submit = 'submit',
     send = 'send',
     set = 'set',
     update = 'update',
+}
+
+export enum ROOT_KEYS {
+    device = 'device',
+    user = 'user',
 }

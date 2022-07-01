@@ -4,6 +4,11 @@ import { IRootState } from '../reducers/root.reducer';
 const rootStateKey = 'rootState';
 const selectRootSate = createFeatureSelector<IRootState>(rootStateKey);
 
+export const selectUserAuthStatus = createSelector(
+    selectRootSate,
+    (state) => state.userAuthStatus
+);
+
 export const selectDeviceInfo = createSelector(
     selectRootSate,
     (state) => state.deviceInfo

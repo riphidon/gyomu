@@ -5,21 +5,18 @@ import { Observable } from 'rxjs';
 import { HomeEffects } from './home.effects';
 
 describe('HomeEffects', () => {
-  let actions$: Observable<any>;
-  let effects: HomeEffects;
+    let actions$: Observable<any>;
+    let effects: HomeEffects;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        HomeEffects,
-        provideMockActions(() => actions$)
-      ]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [HomeEffects, provideMockActions(() => actions$)],
+        });
+
+        effects = TestBed.inject(HomeEffects);
     });
 
-    effects = TestBed.inject(HomeEffects);
-  });
-
-  it('should be created', () => {
-    expect(effects).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(effects).toBeTruthy();
+    });
 });

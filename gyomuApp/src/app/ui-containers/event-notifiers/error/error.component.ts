@@ -24,15 +24,15 @@ export class ErrorComponent implements OnInit {
 
     getErrorMessage(): void {
         switch (this.data.error.code) {
-        case 400:
-            this.errMsg = `An error occured while trying to ${this.data.error.action} ${this.data.error.item}. <br /> Please check the data you provided. <br /> ${this.data.context}`;
-            break;
-        case 403:
-            this.errMsg = `You do not have the authorization to ${this.data.error.action} ${this.data.error.item}.`;
-            break;
-        default:
-            this.errMsg = `An error occured while trying to ${this.data.error.action} ${this.data.error.item}. \n Please try again later .`;
-            break;
+            case 400:
+                this.errMsg = `An error occured while trying to ${this.data.error.action} ${this.data.error.item}. <br /> Please check the data you provided. <br /> ${this.data.context}`;
+                break;
+            case 403:
+                this.errMsg = `You do not have the authorization to ${this.data.error.action} ${this.data.error.item}.`;
+                break;
+            default:
+                this.errMsg = `An error occured while trying to ${this.data.error.action} ${this.data.error.item}. \n Please try again later .`;
+                break;
         }
     }
 }

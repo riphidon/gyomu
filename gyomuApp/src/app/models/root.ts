@@ -1,6 +1,10 @@
 /**********************************
  *              DEVICE
  **********************************/
+export enum SCREEN {
+    portrait = 'portrait',
+    landscape = 'landscape',
+}
 export enum DEVICE_KEYS {
     mobile = 'Mobile',
     tablet = 'Tablet',

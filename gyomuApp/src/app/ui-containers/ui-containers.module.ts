@@ -11,14 +11,14 @@ import { RegisterComponent } from './access-forms/register/register.component';
 import { BaseRegistrationComponent } from './access-forms/base-registration/base-registration.component';
 import { BaseRegistrationBtnComponent } from './access-forms/base-registration/base-registration-btn/base-registration-btn.component';
 import { HomeScreenComponent } from './home-screen/home-screen.component';
-import { HomeLogScreenComponent } from './home-log-screen/home-log-screen.component';
+import { LoginPageComponent } from './login-page/login-page.component';
 
 @NgModule({
     declarations: [
         BaseRegistrationComponent,
         BaseRegistrationBtnComponent,
         ErrorComponent,
-        HomeLogScreenComponent,
+        LoginPageComponent,
         HomeScreenComponent,
         LoginComponent,
         LogoutComponent,
@@ -32,7 +32,7 @@ import { HomeLogScreenComponent } from './home-log-screen/home-log-screen.compon
         BaseRegistrationComponent,
         BaseRegistrationBtnComponent,
         ErrorComponent,
-        HomeLogScreenComponent,
+        LoginPageComponent,
         HomeScreenComponent,
         LoginComponent,
         LogoutComponent,

@@ -77,6 +77,7 @@ export class GyomuShellComponent implements OnInit {
             }
         });
     }
+
     /**************************************
      *           MENUS / DRAWERS
      **************************************/

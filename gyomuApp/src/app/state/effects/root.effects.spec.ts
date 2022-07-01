@@ -5,21 +5,18 @@ import { Observable } from 'rxjs';
 import { RootEffects } from './root.effects';
 
 describe('RootEffects', () => {
-  let actions$: Observable<any>;
-  let effects: RootEffects;
+    let actions$: Observable<any>;
+    let effects: RootEffects;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        RootEffects,
-        provideMockActions(() => actions$)
-      ]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [RootEffects, provideMockActions(() => actions$)],
+        });
+
+        effects = TestBed.inject(RootEffects);
     });
 
-    effects = TestBed.inject(RootEffects);
-  });
-
-  it('should be created', () => {
-    expect(effects).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(effects).toBeTruthy();
+    });
 });

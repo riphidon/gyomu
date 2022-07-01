@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy, RouterModule } from '@angular/router';
 
+import { AngularDeviceInformationService } from 'angular-device-information';
+
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,10 +26,13 @@ import { HomeShellComponent } from './shells/home-shell/home-shell.component';
 import { ProjectsShellComponent } from './shells/projects-shell/projects-shell.component';
 import { rootReducer } from './state/reducers/root.reducer';
 import { HttpClientModule } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
+import { AccessShellComponent } from './shells/access-shell/access-shell.component';
 
 @NgModule({
     declarations: [
         AppComponent,
+        AccessShellComponent,
         GyomuShellComponent,
         HomeShellComponent,
         ProjectsShellComponent,
@@ -54,8 +59,12 @@ import { HttpClientModule } from '@angular/common/http';
             maxAge: 25,
             logOnly: environment.production,
         }),
+        JwtModule,
     ],
-    providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+    providers: [
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+        AngularDeviceInformationService,
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

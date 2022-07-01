@@ -20,7 +20,7 @@
         "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
-        "prettier"
+        "plugin:prettier/recommended"
       ],
       "rules": {
         "@angular-eslint/component-class-suffix": [
@@ -72,14 +72,6 @@
       ],
       "extends": [
         "plugin:ngrx/recommended"
-      ]
-    },
-    {
-      "files": [
-        "*.ts"
-      ],
-      "extends": [
-        "plugin:@ngrx/recommended"
       ]
     }
   ]
