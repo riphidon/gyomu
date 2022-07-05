@@ -2,7 +2,6 @@ package routes
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -13,33 +12,37 @@ import (
 	"github.com/riphidon/gyomu/api/repositories"
 )
 
+// Users allows user service access bey being passed as signature.
 type Users struct {
 	us repositories.IUserService
 }
 
+// Below are models that satisfy outer facing contracts.
+
+// SignupForm is the model for sign up / register a user.
 type SignupForm struct {
 	Name     string `schema:"name"`
 	Email    string `schema:"email"`
 	Password string `schema:"password"`
 }
 
+// LoginForm is the model that contains credentials to ligin user.
 type LoginForm struct {
 	Email    string `schema:"email"`
 	Password string `schema:"password"`
 }
 
+// GyomuUser is the model for the classic user.
 type GyomuUser struct {
-	Id          int    `json:"id"`
+	ID          int    `json:"id"`
 	Name        string `json:"name"`
 	Nick        string `json:"nick"`
 	Email       string `json:"email"`
 	IsSuperUser bool   `json:"isSuperUser"`
 }
 
-// NewUsers is used to create a new Users controller.
-// This function will panic if the templates are not
-// parsed correctly, and should only be used during
-// initial setup.
+// NewUsers is used to create a new IUserService access.
+// Should only be used during initial setup.
 func NewUsers(us repositories.IUserService) *Users {
 	return &Users{
 		us: us,
@@ -58,7 +61,7 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Couldn't parse form", http.StatusBadRequest)
 		return
 	}
-	fmt.Println(form.Name)
+
 	user := repositories.User{
 		Name:     form.Name,
 		Email:    form.Email,
@@ -66,13 +69,13 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := u.us.Create(&user); err != nil {
-
-		http.Error(w, err.Error(), http.StatusFound)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+
 	err := u.signIn(w, &user)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 }
@@ -85,12 +88,12 @@ func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 
 	form := LoginForm{}
 	if err := parseForm(r, &form); err != nil {
-		http.Error(w, "Couldn't parse form", http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	user, err := u.us.Authenticate(form.Email, form.Password)
 	if err != nil {
-		http.Error(w, "No account", http.StatusNotFound)
+		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
 	err = u.signIn(w, user)
@@ -144,7 +147,7 @@ func (u *Users) signIn(w http.ResponseWriter, user *repositories.User) error {
 	http.SetCookie(w, &cookie)
 
 	gu := &GyomuUser{
-		Id:          int(user.ID),
+		ID:          int(user.ID),
 		Name:        user.Name,
 		Nick:        user.Nickname,
 		Email:       user.Email,
@@ -155,10 +158,11 @@ func (u *Users) signIn(w http.ResponseWriter, user *repositories.User) error {
 	return nil
 }
 
+// SetupUser registers all routes for user related endpoints.
 func SetupUser(r *mux.Router, s *repositories.DBServices) {
-	requireUserMw := middleware.RequireUser{}
+	userCheckMw := middleware.UserChecker{}
 	userCtrl := NewUsers(s.User)
 	r.HandleFunc("/signup", userCtrl.Create).Methods("POST")
 	r.HandleFunc("/login", userCtrl.Login).Methods("POST")
-	r.Handle("/logout", requireUserMw.AuthFn(userCtrl.Logout)).Methods("POST")
+	r.Handle("/logout", userCheckMw.AuthFn(userCtrl.Logout)).Methods("POST")
 }

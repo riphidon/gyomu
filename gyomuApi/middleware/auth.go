@@ -43,14 +43,14 @@ func (mw *User) AuthFn(next http.HandlerFunc) http.HandlerFunc {
 	})
 }
 
-type RequireUser struct {
+type UserChecker struct {
 	User
 }
 
 // AuthFn will return an http.HandlerFunc that will
 // check to see if a user is logged in and then
 // call next(w, r) if they are.
-func (mw *RequireUser) AuthFn(next http.HandlerFunc) http.HandlerFunc {
+func (mw *UserChecker) AuthFn(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		user := context.User(r.Context())
 		if user == nil {
@@ -61,6 +61,6 @@ func (mw *RequireUser) AuthFn(next http.HandlerFunc) http.HandlerFunc {
 
 }
 
-func (mw *RequireUser) AppHandler(next http.Handler) http.HandlerFunc {
+func (mw *UserChecker) AppHandler(next http.Handler) http.HandlerFunc {
 	return mw.AuthFn(next.ServeHTTP)
 }
