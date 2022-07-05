@@ -57,27 +57,27 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 
 	var form SignupForm
 
-	if err := parseForm(r, &form); err != nil {
+	if err := parseJSONBody(r, &form); err != nil {
 		http.Error(w, "Couldn't parse form", http.StatusBadRequest)
 		return
 	}
 
-	user := repositories.User{
-		Name:     form.Name,
-		Email:    form.Email,
-		Password: form.Password,
-	}
+	// user := repositories.User{
+	// 	Name:     form.Name,
+	// 	Email:    form.Email,
+	// 	Password: form.Password,
+	// }
 
-	if err := u.us.Create(&user); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+	// if err := u.us.Create(&user); err != nil {
+	// 	http.Error(w, err.Error(), http.StatusBadRequest)
+	// 	return
+	// }
 
-	err := u.signIn(w, &user)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+	// err := u.signIn(w, &user)
+	// if err != nil {
+	// 	http.Error(w, err.Error(), http.StatusBadRequest)
+	// 	return
+	// }
 }
 
 // Login is used to verify the provided email address and
@@ -87,7 +87,7 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 
 	form := LoginForm{}
-	if err := parseForm(r, &form); err != nil {
+	if err := parseJSONBody(r, &form); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}

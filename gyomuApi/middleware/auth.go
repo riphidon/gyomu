@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"errors"
 	"net/http"
 
 	"github.com/riphidon/gyomu/api/context"
@@ -54,7 +53,7 @@ func (mw *UserChecker) AuthFn(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		user := context.User(r.Context())
 		if user == nil {
-			errors.New("You are not authorised")
+			http.Error(w, "You are not authorized to perform this request", http.StatusForbidden)
 		}
 		next(w, r)
 	})

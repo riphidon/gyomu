@@ -1,0 +1,7 @@
+# github.com/riphidon/gyomu/api/routes
+routes\users.go:60:29: not enough arguments in call to parseJSONBody
+	have (*http.Request, *SignupForm)
+	want (http.ResponseWriter, *http.Request, interface{})
+routes\users.go:90:29: not enough arguments in call to parseJSONBody
+	have (*http.Request, *LoginForm)
+	want (http.ResponseWriter, *http.Request, interface{})
