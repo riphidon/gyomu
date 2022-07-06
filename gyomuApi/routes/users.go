@@ -58,7 +58,7 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 	var form SignupForm
 
 	if err := parseJSONBody(w, r, &form); err != nil {
-		http.Error(w, "Couldn't parse form", http.StatusBadRequest)
+		http.Error(w, err.Err, err.StatusCode)
 		return
 	}
 
@@ -69,13 +69,13 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := u.us.Create(&user); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	err := u.signIn(w, &user)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusOK)
 		return
 	}
 }
@@ -88,7 +88,7 @@ func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 
 	form := LoginForm{}
 	if err := parseJSONBody(w, r, &form); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Err, err.StatusCode)
 		return
 	}
 	user, err := u.us.Authenticate(form.Email, form.Password)

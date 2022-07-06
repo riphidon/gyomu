@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"errors"
+	"log"
 	"regexp"
 	"strings"
 
@@ -11,6 +13,7 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
+	errorg "github.com/riphidon/gyomu/api/errors"
 	"github.com/riphidon/gyomu/api/rand"
 )
 
@@ -159,9 +162,16 @@ func (ug *userGorm) Delete(id uint) error {
 // If there is another error, return error providing context.
 func (ug *userGorm) ByID(id uint) (*User, error) {
 	var user User
+
 	db := ug.db.Where("id = ?", id)
 	err := first(db, &user)
 	if err != nil {
+		debug := &errorg.DebugError{
+			Origin: "repositories",
+			Item:   "user",
+			Err:    err,
+		}
+		log.Print(debug)
 		return nil, err
 	}
 	return &user, nil
@@ -188,7 +198,7 @@ func (ug *userGorm) ByEmail(email string) (*User, error) {
 // nothing is found in the query, it will return ErrNotFound.
 func first(db *gorm.DB, dst interface{}) error {
 	err := db.First(dst).Error
-	if err == gorm.ErrRecordNotFound {
+	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return ErrNotFound
 	}
 	return err

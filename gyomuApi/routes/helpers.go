@@ -10,23 +10,23 @@ import (
 )
 
 type requestError struct {
-	status int
-	msg    string
+	StatusCode int
+	Err        string
 }
 
 func (rq *requestError) Error() string {
-	return rq.msg
+	return rq.Err
 }
 
-func parseJSONBody(w http.ResponseWriter, r *http.Request, dst interface{}) error {
+func parseJSONBody(w http.ResponseWriter, r *http.Request, dst interface{}) *requestError {
 
 	// Check if content type is "application/json".
 	val := r.Header.Get("Content-Type")
 	if val != "application/json" {
 		msg := "Content-Type is not set to application/json"
 		return &requestError{
-			status: http.StatusUnsupportedMediaType,
-			msg:    msg,
+			StatusCode: http.StatusUnsupportedMediaType,
+			Err:        msg,
 		}
 	}
 
@@ -45,47 +45,46 @@ func parseJSONBody(w http.ResponseWriter, r *http.Request, dst interface{}) erro
 		case errors.As(err, &syntaxErr):
 			msg := fmt.Sprintf("Badly-formed JSON (at position %d)", syntaxErr.Offset)
 			return &requestError{
-				status: http.StatusBadRequest,
-				msg:    msg,
+				StatusCode: http.StatusBadRequest,
+				Err:        msg,
 			}
 
 		case errors.Is(err, io.ErrUnexpectedEOF):
 			msg := fmt.Sprintf("Badly-formed JSON")
 			return &requestError{
-				status: http.StatusBadRequest,
-				msg:    msg,
+				StatusCode: http.StatusBadRequest,
+				Err:        msg,
 			}
 
 		case errors.Is(err, io.EOF):
 			msg := "Request body must not be empty"
 			return &requestError{
-				status: http.StatusBadRequest,
-				msg:    msg,
+				StatusCode: http.StatusBadRequest,
+				Err:        msg,
 			}
 
 		case errors.As(err, &unmarshalErr):
 			msg := fmt.Sprintf("Request body contains an invalid value for the %q field (at position %d)", unmarshalErr.Field, unmarshalErr.Offset)
 			return &requestError{
-				status: http.StatusBadRequest,
-				msg:    msg,
+				StatusCode: http.StatusBadRequest,
+				Err:        msg,
 			}
 
 		case strings.HasPrefix(err.Error(), "json: unknown field "):
 			fieldName := strings.TrimPrefix(err.Error(), "json: unknown field ")
 			msg := fmt.Sprintf("Request body contains unknown field %s", fieldName)
 			return &requestError{
-				status: http.StatusBadRequest,
-				msg:    msg,
+				StatusCode: http.StatusBadRequest,
+				Err:        msg,
 			}
 
 		case err.Error() == "http: request body too large":
 			msg := "Request body must not be larger than 1MB"
 			return &requestError{
-				status: http.StatusRequestEntityTooLarge,
-				msg:    msg,
+				StatusCode: http.StatusRequestEntityTooLarge,
+				Err:        msg,
 			}
 		}
-		return err
 	}
 	return nil
 }
