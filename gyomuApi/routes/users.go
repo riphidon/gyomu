@@ -22,9 +22,10 @@ type Users struct {
 
 // SignupForm is the model for sign up / register a user.
 type SignupForm struct {
-	Name     string `schema:"name"`
-	Email    string `schema:"email"`
-	Password string `schema:"password"`
+	FirstName string
+	LastName  string
+	Email     string `schema:"email"`
+	Password  string `schema:"password"`
 }
 
 // LoginForm is the model that contains credentials to ligin user.
@@ -64,9 +65,10 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user := repositories.User{
-		Name:     form.Name,
-		Email:    form.Email,
-		Password: form.Password,
+		FirstName: form.FirstName,
+		LastName:  form.LastName,
+		Email:     form.Email,
+		Password:  form.Password,
 	}
 
 	if err := u.us.Create(&user); err != nil {
@@ -149,7 +151,7 @@ func (u *Users) signIn(w http.ResponseWriter, user *repositories.User) error {
 
 	gu := &GyomuUser{
 		ID:          int(user.ID),
-		Name:        user.Name,
+		Name:        user.LastName,
 		Nick:        user.Nickname,
 		Email:       user.Email,
 		IsSuperUser: user.SuperUSer,

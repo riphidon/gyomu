@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+
 	"github.com/riphidon/gyomu/api/hash"
 	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/text/cases"
@@ -48,7 +48,8 @@ func (e entityError) Public() string {
 // access to their content.
 type User struct {
 	gorm.Model
-	Name         string
+	FirstName    string
+	LastName     string
 	Email        string `gorm:"not null;unique_index"`
 	Nickname     string
 	SuperUSer    bool
@@ -143,10 +144,13 @@ func (ug *userGorm) ByRemember(rememberHash string) (*User, error) {
 // Create provided user and backfill data
 // like the ID, CreatedAt, and UpdatedAt fields.
 func (ug *userGorm) Create(user *User) error {
+	if user.Nickname == "" {
+		user.Nickname = user.FirstName
+	}
 	err := ug.db.Create(user).Error
 	if err != nil {
 		errors.NewDebugError(repoKey, userKey, err)
-		return errors.NewResponseError(http.StatusInternalServerError, msgCreateUser, err)
+		return errors.NewResponseError(http.StatusOK, msgCreateUser, err)
 	}
 	return nil
 }
@@ -199,7 +203,7 @@ func (ug *userGorm) ByEmail(email string) (*User, error) {
 	err := first(db, &user)
 	if err != nil {
 		errors.NewDebugError(repoKey, userKey, err)
-		return nil, errors.NewResponseError(http.StatusNotFound, msgUserNotFound, err)
+		return nil, err
 	}
 	return &user, nil
 }
@@ -316,12 +320,13 @@ func (uv *userValidator) emailFormat(user *User) error {
 
 func (uv *userValidator) emailIsAvailable(user *User) error {
 	existing, err := uv.ByEmail(user.Email)
-	if err == ErrNotFound {
+	if errors.Is(err, ErrNotFound) {
 		return nil
 	}
 	if err != nil {
 		return err
 	}
+
 	if user.ID != existing.ID {
 		return ErrEmailTaken
 	}
