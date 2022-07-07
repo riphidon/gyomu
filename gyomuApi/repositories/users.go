@@ -1,8 +1,7 @@
 package repositories
 
 import (
-	"errors"
-	"log"
+	"net/http"
 	"regexp"
 	"strings"
 
@@ -13,21 +12,21 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
-	errorg "github.com/riphidon/gyomu/api/errors"
+	"github.com/riphidon/gyomu/api/errors"
 	"github.com/riphidon/gyomu/api/rand"
 )
 
 var (
-	ErrNotFound          entityError = "entity: ressource not found"
-	ErrIDInvalid         entityError = "entity: invalid ID"
-	ErrPasswordIncorrect entityError = "entity: incorrect password"
-	ErrPasswordTooShort  entityError = "entity: password must be at least 8 characters long"
-	ErrPasswordRequired  entityError = "entity: password is required"
-	ErrRemembertooShort  entityError = "entity: remember token must be at least 32 bytes"
-	ErrRememberRequired  entityError = "entity: remember token is required"
-	ErrEmailRequired     entityError = "entity: email adress is required"
-	ErrEmailInvalid      entityError = "entity: email adress is not valid"
-	ErrEmailTaken        entityError = "entity: email adress is already taken"
+	ErrNotFound          entityError = "ressource not found"
+	ErrIDInvalid         entityError = "invalid ID"
+	ErrPasswordIncorrect entityError = "incorrect password"
+	ErrPasswordTooShort  entityError = "password must be at least 8 characters long"
+	ErrPasswordRequired  entityError = "password is required"
+	ErrRemembertooShort  entityError = "remember token must be at least 32 bytes"
+	ErrRememberRequired  entityError = "remember token is required"
+	ErrEmailRequired     entityError = "email adress is required"
+	ErrEmailInvalid      entityError = "email adress is not valid"
+	ErrEmailTaken        entityError = "email adress is already taken"
 )
 
 type entityError string
@@ -114,16 +113,18 @@ func NewUserService(db *gorm.DB, pepper, hmacKey string) IUserService {
 func (us *userService) Authenticate(email, password string) (*User, error) {
 	founduser, err := us.ByEmail(email)
 	if err != nil {
-		return nil, err
+		errors.NewDebugError(repoKey, userKey, err)
+		return nil, errors.NewResponseError(http.StatusNotFound, msgUserNotFound, err)
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(founduser.PasswordHash), []byte(password+us.pepper))
 	switch err {
 	case nil:
 		return founduser, nil
 	case bcrypt.ErrMismatchedHashAndPassword:
-		return nil, ErrPasswordIncorrect
+		return nil, errors.NewResponseError(http.StatusOK, string(ErrPasswordIncorrect), err)
 	default:
-		return nil, err
+		errors.NewDebugError(repoKey, userKey, err)
+		return nil, errors.NewResponseError(http.StatusNotFound, msgLoginUser, err)
 	}
 }
 
@@ -142,18 +143,33 @@ func (ug *userGorm) ByRemember(rememberHash string) (*User, error) {
 // Create provided user and backfill data
 // like the ID, CreatedAt, and UpdatedAt fields.
 func (ug *userGorm) Create(user *User) error {
-	return ug.db.Create(user).Error
+	err := ug.db.Create(user).Error
+	if err != nil {
+		errors.NewDebugError(repoKey, userKey, err)
+		return errors.NewResponseError(http.StatusInternalServerError, msgCreateUser, err)
+	}
+	return nil
 }
 
 // Update the provided user.
 func (ug *userGorm) Update(user *User) error {
-	return ug.db.Save(user).Error
+	err := ug.db.Save(user).Error
+	if err != nil {
+		errors.NewDebugError(repoKey, userKey, err)
+		return errors.NewResponseError(http.StatusInternalServerError, msgUpdateUser, err)
+	}
+	return nil
 }
 
 // Delete the user with the provided ID
 func (ug *userGorm) Delete(id uint) error {
 	user := User{Model: gorm.Model{ID: id}}
-	return ug.db.Delete(&user).Error
+	err := ug.db.Delete(&user).Error
+	if err != nil {
+		errors.NewDebugError(repoKey, userKey, err)
+		return errors.NewResponseError(http.StatusInternalServerError, msgDeleteUser, err)
+	}
+	return nil
 }
 
 // ByID looks up a user with the provided ID.
@@ -162,17 +178,11 @@ func (ug *userGorm) Delete(id uint) error {
 // If there is another error, return error providing context.
 func (ug *userGorm) ByID(id uint) (*User, error) {
 	var user User
-
 	db := ug.db.Where("id = ?", id)
 	err := first(db, &user)
 	if err != nil {
-		debug := &errorg.DebugError{
-			Origin: "repositories",
-			Item:   "user",
-			Err:    err,
-		}
-		log.Print(debug)
-		return nil, err
+		errors.NewDebugError(repoKey, userKey, err)
+		return nil, errors.NewResponseError(http.StatusNotFound, msgUserNotFound, err)
 	}
 	return &user, nil
 
@@ -188,7 +198,8 @@ func (ug *userGorm) ByEmail(email string) (*User, error) {
 	db := ug.db.Where("email = ?", email)
 	err := first(db, &user)
 	if err != nil {
-		return nil, err
+		errors.NewDebugError(repoKey, userKey, err)
+		return nil, errors.NewResponseError(http.StatusNotFound, msgUserNotFound, err)
 	}
 	return &user, nil
 }

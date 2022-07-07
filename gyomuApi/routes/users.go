@@ -7,6 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/riphidon/gyomu/api/context"
+	"github.com/riphidon/gyomu/api/errors"
 	"github.com/riphidon/gyomu/api/middleware"
 	"github.com/riphidon/gyomu/api/rand"
 	"github.com/riphidon/gyomu/api/repositories"
@@ -58,7 +59,7 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 	var form SignupForm
 
 	if err := parseJSONBody(w, r, &form); err != nil {
-		http.Error(w, err.Err, err.StatusCode)
+		errors.DoErrorResponse(w, err)
 		return
 	}
 
@@ -88,17 +89,17 @@ func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 
 	form := LoginForm{}
 	if err := parseJSONBody(w, r, &form); err != nil {
-		http.Error(w, err.Err, err.StatusCode)
+		errors.DoErrorResponse(w, err)
 		return
 	}
 	user, err := u.us.Authenticate(form.Email, form.Password)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
+		errors.DoErrorResponse(w, err)
 		return
 	}
 	err = u.signIn(w, user)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		errors.DoErrorResponse(w, err)
 		return
 	}
 }
