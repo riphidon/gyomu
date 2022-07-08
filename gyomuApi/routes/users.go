@@ -9,6 +9,7 @@ import (
 	"github.com/riphidon/gyomu/api/context"
 	"github.com/riphidon/gyomu/api/errors"
 	"github.com/riphidon/gyomu/api/middleware"
+	"github.com/riphidon/gyomu/api/models"
 	"github.com/riphidon/gyomu/api/rand"
 	"github.com/riphidon/gyomu/api/repositories"
 )
@@ -16,31 +17,6 @@ import (
 // Users allows user service access bey being passed as signature.
 type Users struct {
 	us repositories.IUserService
-}
-
-// Below are models that satisfy outer facing contracts.
-
-// SignupForm is the model for sign up / register a user.
-type SignupForm struct {
-	FirstName string
-	LastName  string
-	Email     string `schema:"email"`
-	Password  string `schema:"password"`
-}
-
-// LoginForm is the model that contains credentials to ligin user.
-type LoginForm struct {
-	Email    string `schema:"email"`
-	Password string `schema:"password"`
-}
-
-// GyomuUser is the model for the classic user.
-type GyomuUser struct {
-	ID          int    `json:"id"`
-	Name        string `json:"name"`
-	Nick        string `json:"nick"`
-	Email       string `json:"email"`
-	IsSuperUser bool   `json:"isSuperUser"`
 }
 
 // NewUsers is used to create a new IUserService access.
@@ -57,19 +33,14 @@ func NewUsers(us repositories.IUserService) *Users {
 // POST /signup
 func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 
-	var form SignupForm
+	var form models.SignupForm
 
 	if err := parseJSONBody(w, r, &form); err != nil {
 		errors.DoErrorResponse(w, err)
 		return
 	}
 
-	user := repositories.User{
-		FirstName: form.FirstName,
-		LastName:  form.LastName,
-		Email:     form.Email,
-		Password:  form.Password,
-	}
+	user := models.SignUpToUser(form)
 
 	if err := u.us.Create(&user); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -89,7 +60,7 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 // POST /login
 func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 
-	form := LoginForm{}
+	form := models.LoginForm{}
 	if err := parseJSONBody(w, r, &form); err != nil {
 		errors.DoErrorResponse(w, err)
 		return
@@ -149,13 +120,7 @@ func (u *Users) signIn(w http.ResponseWriter, user *repositories.User) error {
 
 	http.SetCookie(w, &cookie)
 
-	gu := &GyomuUser{
-		ID:          int(user.ID),
-		Name:        user.LastName,
-		Nick:        user.Nickname,
-		Email:       user.Email,
-		IsSuperUser: user.SuperUSer,
-	}
+	gu := models.GyomuUserModel(user)
 
 	json.NewEncoder(w).Encode(gu)
 	return nil

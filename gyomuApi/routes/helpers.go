@@ -21,6 +21,8 @@ var (
 
 type jsonParseError error
 
+// parseJsonBody gets json object from request body and map it into a given interface.
+// If error build human readable response error and return it.
 func parseJSONBody(w http.ResponseWriter, r *http.Request, dst interface{}) error {
 
 	// Check if content type is "application/json".
@@ -70,3 +72,5 @@ func parseJSONBody(w http.ResponseWriter, r *http.Request, dst interface{}) erro
 	}
 	return nil
 }
+
+//

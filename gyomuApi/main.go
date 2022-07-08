@@ -17,19 +17,21 @@ func main() {
 		"This ensures that a .config file is provided before the application starts.")
 	flag.Parse()
 	// boolPtr is a pointer, make sure to pass its value in LoadConfig().
+
 	cfg := LoadConfig(*boolPtr)
 	dbCfg := cfg.DataBase
 	services, err := repositories.NewServices(
-		repositories.WithGorm(dbCfg.Dialect(PSQL), dbCfg.ConnectionInfo()),
+		repositories.OpenDB(dbCfg.Dialect(PSQL), dbCfg.ConnectionInfo()),
 		// Only log when not in prod.
-		repositories.WithLogMode(!cfg.IsProd()),
-		repositories.WithUser(cfg.Pepper, cfg.HMACKey),
+		repositories.EnableLogMode(!cfg.IsProd()),
+		repositories.SetUserService(cfg.Pepper, cfg.HMACKey),
 	)
 	if err != nil {
 		panic(err)
 	}
 
 	defer services.Close()
+
 	// services.DestructiveReset()
 	services.AutoMigrate()
 
@@ -49,6 +51,7 @@ func main() {
 	userMw := middleware.User{
 		IUserService: services.User,
 	}
+
 	// Create a new server and run it.
 	srv := server.New(userMw.AppHandler(handler), fmt.Sprintf(":%d", cfg.Port))
 	err = srv.ListenAndServe()
