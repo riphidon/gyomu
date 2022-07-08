@@ -22,6 +22,7 @@ export interface IAuthProcess {
 
 export enum ACTION_KEYS {
     accept = 'accept',
+    authCheck = 'authentication check',
     cancel = 'cancel',
     create = 'create',
     delete = 'delete',

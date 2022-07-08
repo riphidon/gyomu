@@ -13,11 +13,9 @@ import { AuthenticationService } from './authentication.service';
     providedIn: 'root',
 })
 export class AuthenticationGuard implements CanActivate {
-    constructor(
-        private authService: AuthenticationService,
-        private router: Router
-    ) {}
+    constructor(private router: Router) {}
     canActivate(): boolean {
+        this.router.navigate(['gyomu/home']);
         return true;
     }
 }

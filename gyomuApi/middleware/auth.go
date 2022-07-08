@@ -12,6 +12,7 @@ type User struct {
 }
 
 func (mw *User) AppHandler(next http.Handler) http.HandlerFunc {
+
 	return mw.AuthFn(next.ServeHTTP)
 }
 

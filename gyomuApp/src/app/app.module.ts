@@ -28,6 +28,8 @@ import { rootReducer } from './state/reducers/root.reducer';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AccessShellComponent } from './shells/access-shell/access-shell.component';
+import { AuthenticationService } from './authentication.service';
+import { RootEffects } from './state/effects/root.effects';
 
 @NgModule({
     declarations: [
@@ -53,7 +55,7 @@ import { AccessShellComponent } from './shells/access-shell/access-shell.compone
             },
             {}
         ),
-        EffectsModule.forRoot([GyomuShellEffects, HomeEffects]),
+        EffectsModule.forRoot([GyomuShellEffects, HomeEffects, RootEffects]),
         EntityDataModule.forRoot(entityConfig),
         StoreDevtoolsModule.instrument({
             maxAge: 25,
@@ -64,6 +66,7 @@ import { AccessShellComponent } from './shells/access-shell/access-shell.compone
     providers: [
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
         AngularDeviceInformationService,
+        AuthenticationService,
     ],
     bootstrap: [AppComponent],
 })

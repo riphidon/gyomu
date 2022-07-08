@@ -25,7 +25,8 @@ export const CheckIsUserAuthenticated = createAction(
 );
 
 export const UserAuthenticated = createAction(
-    '[AppRoot] User Is Authenticated'
+    '[AppRoot] User Is Authenticated',
+    props<{ isAuth: boolean }>()
 );
 
 export const AuthCheckFailure = createAction(

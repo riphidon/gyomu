@@ -2,6 +2,7 @@ package routes
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -126,10 +127,21 @@ func (u *Users) signIn(w http.ResponseWriter, user *repositories.User) error {
 	return nil
 }
 
+func (u *Users) AuthCheck(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Checking auth")
+	authenticated := true
+	user := context.User(r.Context())
+	if user == nil {
+		authenticated = false
+	}
+	json.NewEncoder(w).Encode(authenticated)
+}
+
 // SetupUser registers all routes for user related endpoints.
 func SetupUser(r *mux.Router, s *repositories.DBServices) {
 	userCheckMw := middleware.UserChecker{}
 	userCtrl := NewUsers(s.User)
+	r.HandleFunc("/authcheck", userCtrl.AuthCheck).Methods("GET", "OPTIONS")
 	r.HandleFunc("/signup", userCtrl.Create).Methods("POST")
 	r.HandleFunc("/login", userCtrl.Login).Methods("POST")
 	r.Handle("/logout", userCheckMw.AuthFn(userCtrl.Logout)).Methods("POST")

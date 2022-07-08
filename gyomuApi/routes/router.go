@@ -6,6 +6,5 @@ import (
 
 func NewRouter() *mux.Router {
 	r := mux.NewRouter()
-	mux.CORSMethodMiddleware(r)
 	return r
 }
