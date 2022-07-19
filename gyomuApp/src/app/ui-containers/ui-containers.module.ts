@@ -12,6 +12,7 @@ import { BaseRegistrationComponent } from './access-forms/base-registration/base
 import { BaseRegistrationBtnComponent } from './access-forms/base-registration/base-registration-btn/base-registration-btn.component';
 import { HomeScreenComponent } from './home-screen/home-screen.component';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { IonicModule } from '@ionic/angular';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
         SuccessComponent,
         TagsBoxComponent,
     ],
-    imports: [CommonModule, SharingModule],
+    imports: [CommonModule, SharingModule, IonicModule],
     exports: [
         BaseRegistrationComponent,
         BaseRegistrationBtnComponent,

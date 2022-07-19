@@ -10,23 +10,30 @@ import { ILoginCredentials } from './ui-containers/access-forms/login/login.comp
     providedIn: 'root',
 })
 export class AuthenticationService {
-    authCheckKey = '/authcheck';
+    private baseURL = environment.API_URL;
+    private authCheckKey = '/authcheck';
+    private loginKey = '/login';
+    private logoutKey = '/logout';
     headers = new HttpHeaders().set('content-type', 'application/json');
 
     constructor(private http: HttpClient) {}
 
-    isAuthenticated(): Observable<boolean> {
-        const URL = environment.API_URL + this.authCheckKey;
+    isAuthenticated = false;
+    authCheck(): Observable<boolean> {
+        const URL = this.baseURL + this.authCheckKey;
         return this.http.get<boolean>(URL, { headers: this.headers });
     }
 
     login(credentials: ILoginCredentials): Observable<IGyomuMember> {
-        // TODO implement call to server to login user.
-        return of(USER_TWO);
+        const URL = this.baseURL + this.loginKey;
+        return this.http.post<IGyomuMember>(URL, credentials, {
+            headers: this.headers,
+        });
     }
 
-    logout(): Observable<boolean> {
-        // TODO implement call to server to logout user.
-        return of(true);
+    logout(): Observable<any> {
+        const URL = this.baseURL + this.logoutKey;
+        const h = new HttpHeaders().set('accept', '*/*');
+        return this.http.post<any>(URL, { headers: h });
     }
 }

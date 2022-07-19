@@ -2,7 +2,6 @@ package routes
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -97,6 +96,8 @@ func (u *Users) Logout(w http.ResponseWriter, r *http.Request) {
 	token, _ := rand.RememberToken()
 	user.Remember = token
 	u.us.Update(user)
+	json.NewEncoder(w).Encode(true)
+
 }
 
 // signIn is used to sign the given user in via cookies
@@ -116,7 +117,7 @@ func (u *Users) signIn(w http.ResponseWriter, user *repositories.User) error {
 	cookie := http.Cookie{
 		Name:     "remember_token",
 		Value:    user.Remember,
-		HttpOnly: true,
+		HttpOnly: false,
 	}
 
 	http.SetCookie(w, &cookie)
@@ -128,7 +129,7 @@ func (u *Users) signIn(w http.ResponseWriter, user *repositories.User) error {
 }
 
 func (u *Users) AuthCheck(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Checking auth")
+
 	authenticated := true
 	user := context.User(r.Context())
 	if user == nil {
@@ -141,8 +142,8 @@ func (u *Users) AuthCheck(w http.ResponseWriter, r *http.Request) {
 func SetupUser(r *mux.Router, s *repositories.DBServices) {
 	userCheckMw := middleware.UserChecker{}
 	userCtrl := NewUsers(s.User)
-	r.HandleFunc("/authcheck", userCtrl.AuthCheck).Methods("GET", "OPTIONS")
-	r.HandleFunc("/signup", userCtrl.Create).Methods("POST")
-	r.HandleFunc("/login", userCtrl.Login).Methods("POST")
-	r.Handle("/logout", userCheckMw.AuthFn(userCtrl.Logout)).Methods("POST")
+	r.HandleFunc("/api/authcheck", userCtrl.AuthCheck).Methods("GET", "OPTIONS")
+	r.HandleFunc("/api/signup", userCtrl.Create).Methods("POST")
+	r.HandleFunc("/api/login", userCtrl.Login).Methods("POST", "OPTIONS")
+	r.Handle("/api/logout", userCheckMw.AuthFn(userCtrl.Logout)).Methods("POST")
 }

@@ -1,1 +1,6 @@
-<app-login-page></app-login-page>
+<ng-container *ngIf="{ userLogin: userLogin$ | ngrxPush } as data">
+    <app-login-page
+        [userLogin]="data.userLogin"
+        (userLogger)="login($event)"
+    ></app-login-page>
+</ng-container>

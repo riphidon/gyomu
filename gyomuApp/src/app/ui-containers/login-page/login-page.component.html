@@ -1,4 +1,4 @@
-<mat-card>
+<!-- <mat-card>
     <mat-card-content class="login-panel">
         <h2>Already have an account ? Log in !</h2>
         <app-login></app-login>
@@ -10,4 +10,49 @@
             (baseRegister)="register($event)"
         ></app-base-registration-btn>
     </mat-card-content>
-</mat-card>
+</mat-card> -->
+<ion-grid>
+    <ion-row>
+        <ion-col
+            class="login-panel"
+            sizeXs="12"
+            sizeSm="12"
+            sizeMd="6"
+            sizeLg="6"
+            sizeXl="6"
+        >
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-subtitle
+                        >Already have an account ? Log in !</ion-card-subtitle
+                    >
+                </ion-card-header>
+                <ion-card-content>
+                    <app-login
+                        [loginError]="userLogin?.error"
+                        (userLogger)="login($event)"
+                    ></app-login>
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+        <ion-col
+            class="register-panel"
+            sizeXs="12"
+            sizeSm="12"
+            sizeMd="6"
+            sizeLg="6"
+            sizeXl="6"
+        >
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-subtitle>Or register</ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content
+                    ><app-base-registration-btn
+                        (baseRegister)="register($event)"
+                    ></app-base-registration-btn>
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+    </ion-row>
+</ion-grid>

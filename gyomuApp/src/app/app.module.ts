@@ -25,11 +25,12 @@ import { GyomuShellComponent } from './shells/gyomu-shell/gyomu-shell.component'
 import { HomeShellComponent } from './shells/home-shell/home-shell.component';
 import { ProjectsShellComponent } from './shells/projects-shell/projects-shell.component';
 import { rootReducer } from './state/reducers/root.reducer';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AccessShellComponent } from './shells/access-shell/access-shell.component';
 import { AuthenticationService } from './authentication.service';
 import { RootEffects } from './state/effects/root.effects';
+import { HttpRequestInterceptor } from './http-request-interceptor';
 
 @NgModule({
     declarations: [
@@ -64,6 +65,11 @@ import { RootEffects } from './state/effects/root.effects';
         JwtModule,
     ],
     providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: HttpRequestInterceptor,
+            multi: true,
+        },
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
         AngularDeviceInformationService,
         AuthenticationService,

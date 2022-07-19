@@ -1,9 +1,15 @@
+<p *ngIf="showLoginError">
+    <ion-text color="danger" class="error-message"
+        ><ion-icon name="close-circle-outline"></ion-icon>
+        {{ errorMsg }}</ion-text
+    >
+</p>
 <form [formGroup]="loginForm">
     <!-- Email Input-->
-    <mat-form-field class="email" appearance="legacy">
-        <mat-label>Email</mat-label>
-        <input matInput id="email" formControlName="email" type="email" />
-    </mat-form-field>
+    <ion-item class="email">
+        <ion-label position="floating">Email</ion-label>
+        <ion-input id="email" formControlName="email" type="email"></ion-input>
+    </ion-item>
     <div
         *ngIf="
             loginForm.controls['email'].invalid &&
@@ -20,30 +26,32 @@
     </div>
 
     <!-- Password Input-->
-    <mat-form-field class="password" appearance="legacy">
-        <mat-label>Password</mat-label>
-        <input
-            matInput
+    <ion-item class="password">
+        <ion-label position="floating">Password</ion-label>
+        <ion-input
             id="password"
             formControlName="password"
             type="password"
-        />
-        <div
-            *ngIf="
-                loginForm.controls['password'].invalid &&
-                (loginForm.controls['password'].dirty ||
-                    loginForm.controls['password'].touched)
-            "
-        >
-            <mat-error
-                *ngIf="loginForm.controls['password'].errors?.['required']"
-            >
-                Password is required.
-            </mat-error>
-        </div>
-    </mat-form-field>
+        ></ion-input>
+    </ion-item>
+    <div
+        *ngIf="
+            loginForm.controls['password'].invalid &&
+            (loginForm.controls['password'].dirty ||
+                loginForm.controls['password'].touched)
+        "
+    >
+        <mat-error *ngIf="loginForm.controls['password'].errors?.['required']">
+            Password is required.
+        </mat-error>
+    </div>
 
-    <button mat-button [disabled]="!loginForm.valid" (click)="login()">
+    <ion-button
+        expand="block"
+        class="login-btn"
+        [disabled]="!loginForm.valid"
+        (click)="login()"
+    >
         Login
-    </button>
+    </ion-button>
 </form>

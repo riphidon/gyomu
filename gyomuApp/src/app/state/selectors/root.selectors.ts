@@ -13,3 +13,8 @@ export const selectDeviceInfo = createSelector(
     selectRootSate,
     (state) => state.deviceInfo
 );
+
+export const selectUserLoginStatus = createSelector(
+    selectRootSate,
+    (state) => state.userLogin
+);

@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 
 /** Models */
 import { IDeviceInfo } from 'src/app/models/root';
+import { RootActions } from 'src/app/state/actions';
 
 /** Selectors */
 import { rootItems } from 'src/app/state/selectors';
@@ -73,7 +74,7 @@ export class GyomuShellComponent implements OnInit {
                 // Finally, if no params, route user to home.
             } else {
                 // On app init display the home page
-                this.router.navigateByUrl('/home');
+                this.router.navigateByUrl('gyomu/home');
             }
         });
     }
@@ -98,5 +99,9 @@ export class GyomuShellComponent implements OnInit {
 
     closeSettings() {
         this.settingsMenu.close();
+    }
+
+    logout(): void {
+        this.store.dispatch(RootActions.Logout());
     }
 }

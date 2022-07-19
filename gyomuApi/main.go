@@ -50,8 +50,13 @@ func main() {
 	// Set up endpoints.
 	routes.SetupUser(r, services)
 
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"http://localhost:8100"},
+
+		AllowCredentials: true,
+	})
 	// Set up cors policies to accept request from angular web app.
-	handler := cors.AllowAll().Handler(r)
+	handler := c.Handler(r)
 
 	// Create a new server and run it.
 	srv := server.New(userMw.AppHandler(handler), fmt.Sprintf(":%d", cfg.Port))

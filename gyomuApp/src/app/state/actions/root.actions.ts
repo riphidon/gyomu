@@ -49,17 +49,11 @@ export const LoginUserFailure = createAction(
     props<{ error: IError }>()
 );
 
-export const Logout = createAction(
-    '[AppRoot] Login User',
-    props<{ credentials: ILoginCredentials }>()
-);
+export const Logout = createAction('[AppRoot] Logout');
 
-export const LogoutSuccess = createAction(
-    '[AppRoot] Login User',
-    props<{ user: IGyomuMember }>()
-);
+export const LogoutSuccess = createAction('[AppRoot] Logout Success');
 
 export const LogoutFailure = createAction(
-    '[AppRoot] Login User',
+    '[AppRoot] Logout Failure',
     props<{ error: IError }>()
 );
