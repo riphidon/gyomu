@@ -2,8 +2,10 @@ package repositories
 
 // Keys to reference entities in repository package.
 const (
-	repoKey = "repository"
-	userKey = "user"
+	repoKey    = "repository"
+	userKey    = "user"
+	projectKey = "project"
+	taskKey    = "task"
 )
 
 // Keys to build contextualized helpers.
@@ -15,6 +17,11 @@ const (
 	msgDeleteUser   = msgStem + " delete user." + msgWrapUp
 	msgLoginUser    = msgStem + " login." + msgWrapUp
 	msgUserNotFound = "User does not exists"
+
+	msgCreateProject   = msgStem + " create project." + msgWrapUp
+	msgUpdateProject   = msgStem + " update project." + msgWrapUp
+	msgDeleteProject   = msgStem + " delete project." + msgWrapUp
+	msgProjectNotFound = "Project does not exists"
 )
 
 // Errors in human readable forms.
@@ -28,6 +35,7 @@ var (
 	ErrRememberRequired  entityError = "remember token is required"
 	ErrEmailRequired     entityError = "email adress is required"
 	ErrEmailInvalid      entityError = "email adress is not valid"
+	ErrNameInvalid       entityError = "name is invalid"
 	ErrEmailTaken        entityError = "email adress is already taken"
 )
 

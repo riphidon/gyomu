@@ -20,10 +20,12 @@ type User struct {
 	Email        string `gorm:"not null;unique_index"`
 	Nickname     string
 	SuperUser    bool
-	Password     string `gorm:"-"`
-	PasswordHash string `gorm:"not null"`
-	Remember     string `gorm:"-"`
-	RememberHash string `gorm:"not null"`
+	Projects     map[string]uint `gorm:"serializer:json"`
+	Tasks        map[string]uint `gorm:"serializer:json"`
+	Password     string          `gorm:"-"`
+	PasswordHash string          `gorm:"not null"`
+	Remember     string          `gorm:"-"`
+	RememberHash string          `gorm:"not null"`
 }
 
 // IUserService is a set of methods used to manipulate and
