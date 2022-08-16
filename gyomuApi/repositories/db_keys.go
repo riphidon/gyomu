@@ -26,17 +26,19 @@ const (
 
 // Errors in human readable forms.
 var (
-	ErrNotFound          entityError = "ressource not found"
-	ErrIDInvalid         entityError = "invalid ID"
-	ErrPasswordIncorrect entityError = "incorrect password"
-	ErrPasswordTooShort  entityError = "password must be at least 8 characters long"
-	ErrPasswordRequired  entityError = "password is required"
-	ErrRemembertooShort  entityError = "remember token must be at least 32 bytes"
-	ErrRememberRequired  entityError = "remember token is required"
-	ErrEmailRequired     entityError = "email adress is required"
-	ErrEmailInvalid      entityError = "email adress is not valid"
-	ErrNameInvalid       entityError = "name is invalid"
-	ErrEmailTaken        entityError = "email adress is already taken"
+	ErrNotFound            entityError = "ressource not found"
+	ErrIDInvalid           entityError = "invalid ID"
+	ErrPasswordIncorrect   entityError = "incorrect password"
+	ErrPasswordTooShort    entityError = "password must be at least 8 characters long"
+	ErrPasswordRequired    entityError = "password is required"
+	ErrRemembertooShort    entityError = "remember token must be at least 32 bytes"
+	ErrRememberRequired    entityError = "remember token is required"
+	ErrEmailRequired       entityError = "email adress is required"
+	ErrEmailInvalid        entityError = "email adress is not valid"
+	ErrEmailTaken          entityError = "email adress is already taken"
+	ErrNameInvalid         entityError = "name is invalid"
+	ErrNameRequired        entityError = "name is required"
+	ErrDescriptionRequired entityError = "description must be provided"
 )
 
 type entityError string
